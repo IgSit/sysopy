@@ -23,6 +23,11 @@ void writeHeader(FILE *report) {
             "Real [s]",
             "User [s]",
             "System [s]");
+    printf("%30s\t%15s\t%15s\t%15s\n",
+           "Name",
+           "Real [s]",
+           "User [s]",
+           "System [s]");
 }
 
 void saveTimer(char *name, FILE *f)
@@ -77,11 +82,7 @@ int main(int argc, char* argv[]){
 				fprintf(stderr, "Incorrect wcFiles syntax\n");
 				closeFile(report);
 			}
-			if (wcFiles(argv[i++]) != 0)
-			{
-				fprintf(stderr, "Problem with running function on this file\n");
-				closeFile(report);
-			}
+			wcFiles(argv[i++]);
 			saveTimer("wcFiles", report);
 		}
 		else if (strcmp(command, "saveTmpIntoArray") == 0)

@@ -1,19 +1,20 @@
 CC = gcc
 CFLAGS = -g -Wall
+LIB_NAME = library
 
 all: static shared
 
 static:
-	$(CC) $(CFLAGS) -c library.c -o library.o
-	ar rcs liblibrary.a library.o
-	$(CC) $(CFLAGS) -o main main.c library.o
+	$(CC) $(CFLAGS) -c $(LIB_NAME).c -o $(LIB_NAME).o
+	ar rcs lib$(LIB_NAME).a $(LIB_NAME).o
+	$(CC) $(CFLAGS) -o main main.c $(LIB_NAME).o
 
 shared: _shared
-	$(CC) $(CFLAGS) -o main main.c library.o
+	$(CC) $(CFLAGS) -o main main.c $(LIB_NAME).o
 
 _shared:
-	$(CC) $(CFLAGS) -fPIC -c library.c -o library.o
-	$(CC) $(CFLAGS) -shared -o liblibrary.so library.o
+	$(CC) $(CFLAGS) -fPIC -c $(LIB_NAME).c -o $(LIB_NAME).o
+	$(CC) $(CFLAGS) -shared -o lib$(LIB_NAME).so $(LIB_NAME).o
 
 dynamic: _shared
 	$(CC) main.c -o main -L. -ldl -D dynamic

@@ -28,11 +28,6 @@ int createArray(unsigned int size) {
         printf("Array already initialized\n");
         return -1;
     }
-    if (size < 0)
-    {
-        printf("Negative array size\n");
-        return -1;
-    }
     
     array = calloc(size, sizeof(char*));
     arraySize = size;
@@ -44,6 +39,7 @@ int wcFiles(char* files) {
     startTimer();
     char command[1024] = "wc ";
     strcat(command, files);
+    system(command);
     strcat(command, " > tmp");
     system(command);
     endTimer();
@@ -87,8 +83,8 @@ int saveTmpIntoArray() {
     }
     array[firstFreeIndex] = buffer;
     firstFreeIndex++;
-    endTimer();
     remove("tmp");
+    endTimer();
     return firstFreeIndex - 1;
 }
 

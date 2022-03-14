@@ -8,21 +8,26 @@
 #include <dlfcn.h>
 #endif
 
- clock_t start, end;
+clock_t start, end;
 struct tms st_cpu, en_cpu;
 
 int closeFile(FILE *report) {
-	fclose(report);
-	free(array);
-	return -1;
+    fclose(report);
+    free(array);
+    return -1;
 }
 
 void writeHeader(FILE *report) {
-	fprintf(report, "%30s\t\t%15s\t%15s\t%15s\n",
+    fprintf(report, "%30s\t\t%15s\t%15s\t%15s\n",
             "Name",
             "Real [s]",
             "User [s]",
             "System [s]");
+    printf("%30s\t%15s\t%15s\t%15s\n",
+           "Name",
+           "Real [s]",
+           "User [s]",
+           "System [s]");
 }
 
 void saveTimer(char *name, FILE *f)
@@ -39,7 +44,7 @@ void saveTimer(char *name, FILE *f)
 }
 
 int main(int argc, char* argv[]){
-	#ifdef dynamic
+#ifdef dynamic
     void* handle = dlopen("./liblibrary.so", RTLD_NOW);
     if( !handle ) {
         fprintf(stderr, "dlopen() %s\n", dlerror());
@@ -49,63 +54,59 @@ int main(int argc, char* argv[]){
     int (*wcFiles)(char*) = dlsym(handle, "wcFiles");
     int (*removeBlock)(int) = dlsym(handle, "removeBlock");
     int (*saveTmpIntoArray)(void) = dlsym(handle, "saveTmpIntoArray");
-    #endif
+#endif
 
-	remove("report2.txt");
-	FILE *report = fopen("report2.txt", "a");
-	writeHeader(report);
-	int i = 1;
-	while (i < argc)
-	{
-		char* command = argv[i++];
-		if (strcmp(command, "createArray") == 0)
-		{
-			if (i + 1 > argc)
-			{
-				fprintf(stderr, "Incorrect createArray syntax\n");
-				closeFile(report);
-			}
-			int size = atoi(argv[i++]);
-			createArray(size);
-			saveTimer("createArray", report);
-			
-		}
-		else if (strcmp(command, "wcFiles") == 0)
-		{
-			if (i + 1 > argc)
-			{
-				fprintf(stderr, "Incorrect wcFiles syntax\n");
-				closeFile(report);
-			}
-			if (wcFiles(argv[i++]) != 0)
-			{
-				fprintf(stderr, "Problem with running function on this file\n");
-				closeFile(report);
-			}
-			saveTimer("wcFiles", report);
-		}
-		else if (strcmp(command, "saveTmpIntoArray") == 0)
-		{
-			saveTmpIntoArray();
-			saveTimer("saveTmpIntoArray", report);
-		}
-		else if (strcmp(command, "removeBlock") == 0)
-		{
-			if (i + 1 > argc)
-			{
-				fprintf(stderr, "Incorrect removeBlock syntax\n");
-				closeFile(report);
-			}
-			removeBlock(atoi(argv[i++]));
-			saveTimer("removeBlock", report);
-		}
-		else
-		{
-			printf("Unknown command\n");
-			closeFile(report);
-		}
-	}
-	fclose(report);
-	free(array);
-	return 0;
+    remove("report2.txt");
+    FILE *report = fopen("report2.txt", "a");
+    writeHeader(report);
+    int i = 1;
+    while (i < argc)
+    {
+        char* command = argv[i++];
+        if (strcmp(command, "createArray") == 0)
+        {
+            if (i + 1 > argc)
+            {
+                fprintf(stderr, "Incorrect createArray syntax\n");
+                closeFile(report);
+            }
+            int size = atoi(argv[i++]);
+            createArray(size);
+            saveTimer("createArray", report);
+
+        }
+        else if (strcmp(command, "wcFiles") == 0)
+        {
+            if (i + 1 > argc)
+            {
+                fprintf(stderr, "Incorrect wcFiles syntax\n");
+                closeFile(report);
+            }
+            wcFiles(argv[i++]);
+            saveTimer("wcFiles", report);
+        }
+        else if (strcmp(command, "saveTmpIntoArray") == 0)
+        {
+            saveTmpIntoArray();
+            saveTimer("saveTmpIntoArray", report);
+        }
+        else if (strcmp(command, "removeBlock") == 0)
+        {
+            if (i + 1 > argc)
+            {
+                fprintf(stderr, "Incorrect removeBlock syntax\n");
+                closeFile(report);
+            }
+            removeBlock(atoi(argv[i++]));
+            saveTimer("removeBlock", report);
+        }
+        else
+        {
+            printf("Unknown command\n");
+            closeFile(report);
+        }
+    }
+    fclose(report);
+    free(array);
+    return 0;
 }

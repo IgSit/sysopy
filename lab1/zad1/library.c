@@ -28,12 +28,7 @@ int createArray(unsigned int size) {
         printf("Array already initialized\n");
         return -1;
     }
-    if (size < 0)
-    {
-        printf("Negative array size\n");
-        return -1;
-    }
-    
+
     array = calloc(size, sizeof(char*));
     arraySize = size;
     endTimer();
@@ -44,6 +39,7 @@ int wcFiles(char* files) {
     startTimer();
     char command[1024] = "wc ";
     strcat(command, files);
+    system(command);
     strcat(command, " > tmp");
     system(command);
     endTimer();
@@ -64,7 +60,7 @@ int saveTmpIntoArray() {
         printf("Array not initialized\n");
         return -1;
     }
-    
+
     FILE *file = fopen("tmp", "rb");
     if (!file)
     {
@@ -75,7 +71,7 @@ int saveTmpIntoArray() {
     char* buffer = calloc(size, sizeof(char));
     fread(buffer, sizeof(char), size, file);
     fclose(file);
-    
+
     if (firstFreeIndex == arraySize) // array is full
     {
         char ** tmpArray = calloc(2 * arraySize, sizeof(char*));
@@ -87,8 +83,8 @@ int saveTmpIntoArray() {
     }
     array[firstFreeIndex] = buffer;
     firstFreeIndex++;
-    endTimer();
     remove("tmp");
+    endTimer();
     return firstFreeIndex - 1;
 }
 
@@ -104,7 +100,7 @@ int removeBlock(int index) {
         printf("Tried to remove NULL\n");
         return -1;
     }
-    
+
     if (firstFreeIndex == 0)  //empty array
     {
         printf("Tried to remove from empty array\n");
