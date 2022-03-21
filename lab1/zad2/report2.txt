@@ -1,0 +1,14 @@
+                          Name		       Real [s]	       User [s]	     System [s]
+                   createArray:		       0.000000	       0.000000	       0.000000
+                       wcFiles:		       1.330000	       0.000000	       0.000000
+              saveTmpIntoArray:		       0.000000	       0.000000	       0.000000
+                   removeBlock:		       0.000000	       0.000000	       0.000000
+                       wcFiles:		       2.670000	       0.000000	       0.000000
+              saveTmpIntoArray:		       0.000000	       0.000000	       0.000000
+                   removeBlock:		       0.000000	       0.000000	       0.000000
+                       wcFiles:		       1.760000	       0.000000	       0.000000
+              saveTmpIntoArray:		       0.000000	       0.000000	       0.000000
+                   removeBlock:		       0.000000	       0.000000	       0.000000
+                       wcFiles:		       0.810000	       0.000000	       0.000000
+              saveTmpIntoArray:		       0.000000	       0.000000	       0.000000
+                   removeBlock:		       0.000000	       0.000000	       0.000000

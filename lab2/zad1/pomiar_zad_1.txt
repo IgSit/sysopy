@@ -1,0 +1,3 @@
+                          Name		       Real [s]
+                          copy:		       0.780000
+                         fcopy:		       0.020000
