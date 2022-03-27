@@ -10,4 +10,4 @@ clean:
 test:
 	make clean
 	make main
-	@./main 0.33
+	@./main 0.01

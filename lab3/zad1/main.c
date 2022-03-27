@@ -1,8 +1,12 @@
 #include "stdio.h"
 #include <stdlib.h>
 #include "unistd.h"
+#include <sys/wait.h>
+
 
 int main(int argc, char* argv[]) {
+    pid_t wpid;
+    int status = 0;
     if (argc < 1) {  // no args
         printf("Incorrect syntax.");
         return -1;
@@ -14,5 +18,6 @@ int main(int argc, char* argv[]) {
             exit(0);
         }
     }
+    while ((wpid = wait(&status)) > 0);
     return 0;
 }

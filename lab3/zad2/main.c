@@ -72,6 +72,8 @@ double sumPartialSolutions(double from, double to, double width) {
 }
 
 int main(int argc, char* argv[]) {
+    pid_t wpid;
+    int status = 0;
     if (argc < 1) {
         printf("Invalid syntax.\n");
         return -1;
@@ -83,14 +85,13 @@ int main(int argc, char* argv[]) {
     startTimer();
 #endif
 
-    for (double i = 0.0; i < 1.0;) {
+    for (double i = 0.0; i < 1.0; i+= width) {
         if (fork() == 0) {
             calculatePartialSolution(i, width);
             exit(0);
         }
-        i += width;
     }
-    wait(0);
+    while ((wpid = wait(&status)) > 0);
 
     double solution = sumPartialSolutions(0.0, 1.0, width);
 
