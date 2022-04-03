@@ -2,7 +2,6 @@
 
 Zaprojektuj i przygotuj zestaw funkcji (bibliotekę) do zarządzania tablicą bloków, w których to blokach pamięci zapisywane są rezultaty operacji zliczania lini, słów i znaków (poleceniem wc) w plikach przekazywanych jako odpowiedni parametr.
 
-
 Biblioteka powinna umożliwiać:
 
 * utworzenie tablicy wskaźników w której będą przechowywane wskaźniki na bloki pamięci zawierające wyniki 
@@ -36,6 +35,7 @@ W programie zmierz, wypisz na konsolę i zapisz do pliku z raportem czasy realiz
 * Na przemian  kilkakrotne dodanie i usunięcie zadanej liczby bloków 
 
 Mierząc czasy poszczególnych operacji, zapisz trzy wartości: czas rzeczywisty, czas użytkownika i czas systemowy. Rezultaty umieść pliku raport2.txt i dołącz do archiwum zadania.
+
 ## Zadanie 3. Testy i pomiary (50%)
 
 **(25%) Przygotuj plik Makefile, zawierający polecenie uruchamiania testów oraz polecenia kompilacji programu z zad 2 na trzy sposoby:**
