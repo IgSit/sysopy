@@ -14,4 +14,4 @@ test_sort: clean compile
 	@./main "date"
 
 test_send: clean compile
-	@./main "sigors100@gmail.com" "Shit" "C to taki shit"
+	@./main "sigors100@gmail.com" "Lab5" "XDDDDDDD"
