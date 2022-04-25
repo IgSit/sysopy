@@ -11,8 +11,10 @@
  */
 int get_child_code(void) {
     int status;
-    waitpid(0, &status, 0);
-    if (status >= 0) return status;
+    waitpid(-1, &status, 0);
+    if(WIFEXITED(status)){
+        return WEXITSTATUS(status);
+    }
     return -1;
 }
 
