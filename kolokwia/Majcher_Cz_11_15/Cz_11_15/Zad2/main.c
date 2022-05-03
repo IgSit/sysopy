@@ -9,16 +9,10 @@ void handler(int sig, siginfo_t *siginfo, void *ucontext) {
     printf("Received signal %d from %d with additional value: %d\n",
             sig, siginfo->si_pid, siginfo->si_value.sival_int);
 
-    sigset_t new_mask;
-    sigset_t old_mask;
-    sigemptyset(&new_mask);
-    sigaddset(&new_mask, SIGPIPE);
-    sigprocmask(SIG_BLOCK, &new_mask, &old_mask);
-
-    printf("Mask test: %d\n", sigismember(&new_mask, SIGPIPE));
-
     sigset_t sset;
     sigprocmask(SIG_BLOCK, NULL, &sset);
+
+    printf("Mask test: %d\n", sigismember(&sset, SIGPIPE));
 }
 
 /* Funkcja 'set_handler' ma ustawic 'handler' jako funkcje
@@ -29,7 +23,9 @@ void handler(int sig, siginfo_t *siginfo, void *ucontext) {
  */
 void set_handler(void){
     struct sigaction sig;
-    sig.sa_sigaction = &handler;
+    sig.sa_sigaction = handler;
+    sigemptyset(&sig.sa_mask);
+    sigaddset(&sig.sa_mask, SIGPIPE);
     sig.sa_flags = SA_SIGINFO;
     sigaction(SIGUSR1, &sig, NULL);
 }
