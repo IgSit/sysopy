@@ -1,0 +1,132 @@
+---------------------------------
+Number of threads:   1
+Method used:    numbers
+---------------------------------
+thread:   0,     time: 94220947186928 [μs]
+Total time:  2289 [μs]
+
+
+---------------------------------
+Number of threads:   1
+Method used:    block
+---------------------------------
+thread:   0,     time: 94283304887536 [μs]
+Total time:  1396 [μs]
+
+
+---------------------------------
+Number of threads:   2
+Method used:    numbers
+---------------------------------
+thread:   0,     time: 94660366623984 [μs]
+thread:   1,     time: 94660366623984 [μs]
+Total time:  2488 [μs]
+
+
+---------------------------------
+Number of threads:   2
+Method used:    block
+---------------------------------
+thread:   0,     time: 94637212701936 [μs]
+thread:   1,     time: 94637212701936 [μs]
+Total time:  1001 [μs]
+
+
+---------------------------------
+Number of threads:   4
+Method used:    numbers
+---------------------------------
+thread:   0,     time: 94731233694976 [μs]
+thread:   1,     time: 94731233694976 [μs]
+thread:   2,     time: 94731233694976 [μs]
+thread:   3,     time: 94731233694976 [μs]
+Total time:  3476 [μs]
+
+
+---------------------------------
+Number of threads:   4
+Method used:    block
+---------------------------------
+thread:   0,     time: 94725162743040 [μs]
+thread:   1,     time: 94725162743040 [μs]
+thread:   2,     time: 94725162743040 [μs]
+thread:   3,     time: 94725162743040 [μs]
+Total time:  1009 [μs]
+
+
+---------------------------------
+Number of threads:   8
+Method used:    numbers
+---------------------------------
+thread:   0,     time: 94023604327712 [μs]
+thread:   1,     time: 94023604327712 [μs]
+thread:   2,     time: 94023604327712 [μs]
+thread:   3,     time: 94023604327712 [μs]
+thread:   4,     time: 94023604327712 [μs]
+thread:   5,     time: 94023604327712 [μs]
+thread:   6,     time: 94023604327712 [μs]
+thread:   7,     time: 94023604327712 [μs]
+Total time:  6269 [μs]
+
+
+---------------------------------
+Number of threads:   8
+Method used:    block
+---------------------------------
+thread:   0,     time: 94823186945312 [μs]
+thread:   1,     time: 94823186945312 [μs]
+thread:   2,     time: 94823186945312 [μs]
+thread:   3,     time: 94823186945312 [μs]
+thread:   4,     time: 94823186945312 [μs]
+thread:   5,     time: 94823186945312 [μs]
+thread:   6,     time: 94823186945312 [μs]
+thread:   7,     time: 94823186945312 [μs]
+Total time:  1170 [μs]
+
+
+---------------------------------
+Number of threads:   16
+Method used:    numbers
+---------------------------------
+thread:   0,     time: 94827339185344 [μs]
+thread:   1,     time: 94827339185344 [μs]
+thread:   2,     time: 94827339185344 [μs]
+thread:   3,     time: 94827339185344 [μs]
+thread:   4,     time: 94827339185344 [μs]
+thread:   5,     time: 94827339185344 [μs]
+thread:   6,     time: 94827339185344 [μs]
+thread:   7,     time: 94827339185344 [μs]
+thread:   8,     time: 94827339185344 [μs]
+thread:   9,     time: 94827339185344 [μs]
+thread:  10,     time: 94827339185344 [μs]
+thread:  11,     time: 94827339185344 [μs]
+thread:  12,     time: 94827339185344 [μs]
+thread:  13,     time: 94827339185344 [μs]
+thread:  14,     time: 94827339185344 [μs]
+thread:  15,     time: 94827339185344 [μs]
+Total time: 13873 [μs]
+
+
+---------------------------------
+Number of threads:   16
+Method used:    block
+---------------------------------
+thread:   0,     time: 94656939879616 [μs]
+thread:   1,     time: 94656939879616 [μs]
+thread:   2,     time: 94656939879616 [μs]
+thread:   3,     time: 94656939879616 [μs]
+thread:   4,     time: 94656939879616 [μs]
+thread:   5,     time: 94656939879616 [μs]
+thread:   6,     time: 94656939879616 [μs]
+thread:   7,     time: 94656939879616 [μs]
+thread:   8,     time: 94656939879616 [μs]
+thread:   9,     time: 94656939879616 [μs]
+thread:  10,     time: 94656939879616 [μs]
+thread:  11,     time: 94656939879616 [μs]
+thread:  12,     time: 94656939879616 [μs]
+thread:  13,     time: 94656939879616 [μs]
+thread:  14,     time: 94656939879616 [μs]
+thread:  15,     time: 94656939879616 [μs]
+Total time:  1470 [μs]
+
+
