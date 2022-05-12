@@ -11,16 +11,16 @@ int w, h;
 int M;
 int threads_num;
 
-void write_header(FILE* times_f, char* method) {
-    printf("#################################\n");
-    printf("THREADS:   %d\n", threads_num);
-    printf("METHOD:    %s\n", method);
-    printf("#################################\n\n");
+void write_header(FILE* file, char* method) {
+    printf("---------------------------------\n");
+    printf("Number of threads:  %d\n", threads_num);
+    printf("Method used:  %s\n", method);
+    printf("---------------------------------\n");
 
-    fprintf(times_f, "#################################\n");
-    fprintf(times_f, "THREADS:   %d\n", threads_num);
-    fprintf(times_f, "METHOD:    %s\n", method);
-    fprintf(times_f, "#################################\n\n");
+    fprintf(file, "---------------------------------\n");
+    fprintf(file, "Number of threads:   %d\n", threads_num);
+    fprintf(file, "Method used:    %s\n", method);
+    fprintf(file, "---------------------------------\n\n");
 }
 
 void load_image(char* filename){
@@ -50,20 +50,16 @@ void* numbers_method(void* arg){
     struct timeval stop, start;
     gettimeofday(&start, NULL);  // start mierzenia czasu
 
-    int cnt = 0;
     for (int i = 0; i < h; i++){
-        for (int j = 0; j < w; j++){
-            if (cnt % threads_num == idx)
+        for (int j = idx; j < w; j+= threads_num){
                 negative_image[i][j] = M - image[i][j];
-            cnt++;
         }
     }
 
-    gettimeofday(&stop, NULL);
+    gettimeofday(&stop, NULL);  // koniec mierzenia czasu
     long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     pthread_exit(&time);
 }
-
 
 void* block_method(void* arg) {
     int idx = *((int *) arg);
@@ -85,13 +81,12 @@ void* block_method(void* arg) {
     pthread_exit(&time);
 }
 
-
 void save_negative(char* filename) {
     FILE *f = fopen(filename, "w");
 
     fprintf(f, "P2\n");
     fprintf(f, "%d %d\n", w, h);
-    fprintf(f, "255\n");
+    fprintf(f, "%d\n", M);
 
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++)
@@ -117,22 +112,20 @@ pthread_t* init_threads(char* method) {
 }
 
 void wait_threads(pthread_t* threads, FILE* times_file) {
-    long unsigned int* time;
+    long unsigned int time;
     for(int i = 0; i < threads_num; i++) {
-        pthread_join(threads[i], (void **) &time);
-        printf("thread: %3d     time: %5lu [μs]\n", i, *time);
-        fprintf(times_file, "thread: %3d,     time: %5lu [μs]\n", i, *time);
+        pthread_join(threads[i], (void **) time);
+        printf("thread: %3d     time: %5lu [μs]\n", i, time);
+        fprintf(times_file, "thread: %3d,     time: %5lu [μs]\n", i, time);
     }
 }
 
 void calc_total_time(struct timeval start, struct timeval stop, FILE* times_file) {
     gettimeofday(&stop, NULL);
-    long unsigned int* time = malloc(sizeof(long unsigned int));
-    *time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    printf("TOTAL TIME: %5lu [μs]\n", *time);
-    fprintf(times_file, "TOTAL TIME: %5lu [μs]\n\n\n", *time);
+    long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    printf("Total time: %5lu [μs]\n", time);
+    fprintf(times_file, "Total time: %5lu [μs]\n\n\n", time);
 }
-
 
 int main(int argc, char* argv[]){
 
