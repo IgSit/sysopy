@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include <pthread.h>
 #include <math.h>
 #include <sys/time.h>
 
-#define ROW_LEN 256
-
 int** image;
 int** negative_image;
 int w, h;
+int M;
 int threads_num;
 
 void write_header(FILE* times_f, char* method) {
@@ -26,140 +24,83 @@ void write_header(FILE* times_f, char* method) {
 }
 
 void load_image(char* filename){
-    FILE* f = fopen(filename, "r");
-    if (f == NULL){
-        printf("Error while opening input file\n");
-        exit(1);
-    }
+    FILE* file = fopen(filename, "r");
+    char* buffer = calloc(256, sizeof(char));
 
-//    file format:
+    for (int i = 0; i < 3; i++)  // skip magic number and author
+        fgets(buffer, 256, file);
+    sscanf(buffer, "%d %d\n", &w, &h);  // get dimensions
+    fgets(buffer, 256, file);
+    sscanf(buffer, "%d \n", &M);  // get color variety
 
-//    P2   - "magic number"
-//    W H  -  width height
-//    M    -  max pixel value
-//    ...
-
-    char* buffer = calloc(ROW_LEN, sizeof(char));
-
-    // skip "magic number" (P2)
-    fgets(buffer, ROW_LEN, f);
-
-    bool get_M;
-    bool read_image = false;
-
-    while(!read_image && fgets(buffer, ROW_LEN, f)){
-        if (buffer[0] == '#') continue;
-
-        else if (!get_M){
-            sscanf(buffer, "%d %d\n", &w, &h);
-            printf("w: %d, h: %d\n", w, h);
-            get_M = true;
-        }
-
-        else {
-            // check max pixel value
-            int M;
-            sscanf(buffer, "%d \n", &M);
-            printf("M: %d\n", M);
-            if (M != 255){
-                printf("Max grey value must be 255!\n");
-                exit(1);
-            }
-            read_image = true;
-        }
-    }
-
-    // read image.pgm
-    image = calloc(h, sizeof(int *));
-    for (int i = 0; i < h; i++) {
+    image = calloc(h, sizeof(int*));
+    for (int i = 0; i < h; i++)
         image[i] = calloc(w, sizeof(int));
-    }
 
     int pixel;
-
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
-            fscanf(f, "%d", &pixel);
+            fscanf(file, "%d", &pixel);
             image[i][j] = pixel;
         }
     }
-
-    fclose(f);
+    fclose(file);
 }
 
 
 void* numbers_method(void* arg){
-    struct timeval stop, start;
-    gettimeofday(&start, NULL);
-
     int idx = *((int *) arg);
+    struct timeval stop, start;
+    gettimeofday(&start, NULL);  // start mierzenia czasu
 
-    // pixels from range [256/k*idx, 256/k*(idx+1)], where k is number of threads
-    // last thread takes the rest of the range (up to 255 inclusive)
-    int from = 256 / threads_num * idx;
-    int to = (idx != threads_num - 1) ? (256 / threads_num * (idx + 1) ) : 256;
+    int start_color = (M + 1) / threads_num * idx;
+    int end_color = ((M + 1) / threads_num * (idx + 1));
+    if(idx == threads_num - 1) end_color =  M + 1;
 
-//    printf("from [%d] to [%d]\n", from, to);
-
-    int pixel;
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
-            pixel = image[i][j];
-            if (pixel >= from && pixel < to){
-                negative_image[i][j] = 255 - pixel;
-            }
+            if (start_color <= image[i][j] && image[i][j] < end_color)
+                negative_image[i][j] = M - image[i][j];
         }
     }
 
     gettimeofday(&stop, NULL);
-    long unsigned int* t = malloc(sizeof(long unsigned int));
-    *t = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    pthread_exit(t);
+    long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    pthread_exit(&time);
 }
 
 
 void* block_method(void* arg) {
-    struct timeval stop, start;
-    gettimeofday(&start, NULL);
-
     int idx = *((int *) arg);
+    struct timeval stop, start;
+    gettimeofday(&start, NULL);  // start mierzenia czasu
 
-    int x_from = (idx) * ceil(w / threads_num);
-    int x_to = (idx != threads_num - 1) ? ((idx + 1)* ceil(w / threads_num) - 1) : w - 1;
+    int start_x = (idx) * ceil(w / threads_num);
+    int end_x = ((idx + 1)* ceil(w / threads_num) - 1);
+    if (idx == threads_num - 1) end_x = w - 1;
 
-//    printf("from: %d to: %d \n", x_from, x_to);
-
-    int pixel;
     for (int i = 0; i < h; i++){
-        for (int j = x_from; j <= x_to; j++){
-            pixel = image[i][j];
-            negative_image[i][j] = 255 - pixel;
-        }
+        for (int j = start_x; j <= end_x; j++)
+            negative_image[i][j] = M - image[i][j];
     }
 
-    gettimeofday(&stop, NULL);
-    long unsigned int* t = malloc(sizeof(long unsigned int));
-    *t = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    pthread_exit(t);
+    gettimeofday(&stop, NULL);  // koniec mierzenia czasu
+
+    long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    pthread_exit(&time);
 }
 
 
 void save_negative(char* filename) {
     FILE *f = fopen(filename, "w");
 
-    if (f == NULL) {
-        printf("Error while opening output file\n");
-        exit(1);
-    }
-
     fprintf(f, "P2\n");
     fprintf(f, "%d %d\n", w, h);
     fprintf(f, "255\n");
 
     for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
+        for (int j = 0; j < w; j++)
             fprintf(f, "%d ", negative_image[i][j]);
-        }
         fprintf(f, "\n");
     }
 
