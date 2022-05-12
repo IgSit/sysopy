@@ -1,3 +1,12 @@
+# ręczny komentarz
+    Jak widać, metoda przedziałów kolorów jest dużo wolniejsza - w  metodzie blokowej
+    każdy wątek operuje tylko na części tablicy, natomiast w colors każdy wątek przeszukuje całość,
+    szukając kolorów do zmiany, a równie dobrze już mógłby stworzyć pixel do negatywu. Nawet gdyby
+    kolorów nie szukał każdy wątek osobno, tylko do każdego wątku przekazać tablicę punktów do zmiany, to i tak,
+    żeby je rozdzielić, należałoby przejść całą tablicę raz, co dałoby lepszy wynik niż teraz, ale nadal niższy
+    niż metoda blokowa, bo już szukając, moglibyśmy stworzyć negatyw.
+# koniec
+
 ---------------------------------
 Number of threads:   1
 Method used:    numbers
