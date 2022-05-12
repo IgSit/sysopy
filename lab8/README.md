@@ -25,7 +25,7 @@ Wykonaj pomiary czasu operacji w zależności od:
 
 2. metody podziału zadania na podzadania
 
-Wyniki (czasy dla każdego wątku oraz całkowity czas wykonania zadania w zależności od wariantu) zamieść w pliku Times.txt i dołącz wraz z komentarzem do archiwum z rozwiązaniem zadania (20%).
+**Wyniki (czasy dla każdego wątku oraz całkowity czas wykonania zadania w zależności od wariantu) zamieść w pliku Times.txt i dołącz wraz z komentarzem do archiwum z rozwiązaniem zadania (20%).**
 
 ### Format wejścia-wyjścia
 

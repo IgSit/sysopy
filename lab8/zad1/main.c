@@ -37,30 +37,25 @@ void load_image(char* filename){
     for (int i = 0; i < h; i++)
         image[i] = calloc(w, sizeof(int));
 
-    int pixel;
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
-            fscanf(file, "%d", &pixel);
-            image[i][j] = pixel;
+            fscanf(file, "%d", &image[i][j]);
         }
     }
     fclose(file);
 }
-
 
 void* numbers_method(void* arg){
     int idx = *((int *) arg);
     struct timeval stop, start;
     gettimeofday(&start, NULL);  // start mierzenia czasu
 
-    int start_color = (M + 1) / threads_num * idx;
-    int end_color = ((M + 1) / threads_num * (idx + 1));
-    if(idx == threads_num - 1) end_color =  M + 1;
-
+    int cnt = 0;
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
-            if (start_color <= image[i][j] && image[i][j] < end_color)
+            if (cnt % threads_num == idx)
                 negative_image[i][j] = M - image[i][j];
+            cnt++;
         }
     }
 
