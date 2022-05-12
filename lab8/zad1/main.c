@@ -20,7 +20,7 @@ void write_header(FILE* file, char* method) {
     fprintf(file, "---------------------------------\n");
     fprintf(file, "Number of threads:   %d\n", threads_num);
     fprintf(file, "Method used:    %s\n", method);
-    fprintf(file, "---------------------------------\n\n");
+    fprintf(file, "---------------------------------\n");
 }
 
 void load_image(char* filename){
@@ -48,10 +48,16 @@ void load_image(char* filename){
 void* numbers_method(void* arg){
     int idx = *((int *) arg);
     struct timeval stop, start;
+
+    int start_color = (M + 1) / threads_num * idx;
+    int end_color = ((M + 1) / threads_num * (idx + 1));
+    if (idx == threads_num - 1) end_color = M + 1;
+
     gettimeofday(&start, NULL);  // start mierzenia czasu
 
     for (int i = 0; i < h; i++){
-        for (int j = idx; j < w; j+= threads_num){
+        for (int j = idx; j < w; j++){
+            if (start_color <= image[i][j] && image[i][j] < end_color)
                 negative_image[i][j] = M - image[i][j];
         }
     }
