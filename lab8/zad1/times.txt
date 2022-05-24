@@ -1,132 +1,142 @@
+# ręczny komentarz
+    Jak widać, metoda przedziałów kolorów jest dużo wolniejsza - w  metodzie blokowej
+    każdy wątek operuje tylko na części tablicy, natomiast w colors każdy wątek przeszukuje całość,
+    szukając kolorów do zmiany, a równie dobrze już mógłby stworzyć pixel do negatywu. Nawet gdyby
+    kolorów nie szukał każdy wątek osobno, tylko do każdego wątku przekazać tablicę punktów do zmiany, to i tak,
+    żeby je rozdzielić, należałoby przejść całą tablicę raz, co dałoby lepszy wynik niż teraz, ale nadal niższy
+    niż metoda blokowa, bo już szukając, moglibyśmy stworzyć negatyw.
+# koniec
+
+
 ---------------------------------
 Number of threads:   1
 Method used:    numbers
 ---------------------------------
-thread:   0,     time: 26154 [μs]
-Total time: 38062 [μs]
+thread:   0,     time:  4234 [μs]
+Total time:  4650 [μs]
 
 
 ---------------------------------
 Number of threads:   1
 Method used:    block
 ---------------------------------
-thread:   0,     time:  1304 [μs]
-Total time:  1651 [μs]
+thread:   0,     time:  1347 [μs]
+Total time:  1683 [μs]
 
 
 ---------------------------------
 Number of threads:   2
 Method used:    numbers
 ---------------------------------
-thread:   0,     time:  2836 [μs]
-thread:   1,     time:  2593 [μs]
-Total time:  3062 [μs]
+thread:   0,     time:  5373 [μs]
+thread:   1,     time:  5080 [μs]
+Total time:  6319 [μs]
 
 
 ---------------------------------
 Number of threads:   2
 Method used:    block
 ---------------------------------
-thread:   0,     time:   748 [μs]
-thread:   1,     time:   707 [μs]
-Total time:  1084 [μs]
+thread:   0,     time:  1511 [μs]
+thread:   1,     time:   867 [μs]
+Total time:  1676 [μs]
 
 
 ---------------------------------
 Number of threads:   4
 Method used:    numbers
 ---------------------------------
-thread:   0,     time:  6915 [μs]
-thread:   1,     time:  2802 [μs]
-thread:   2,     time:  2936 [μs]
-thread:   3,     time:  2067 [μs]
-Total time:  7148 [μs]
+thread:   0,     time:  4550 [μs]
+thread:   1,     time:  5059 [μs]
+thread:   2,     time: 10633 [μs]
+thread:   3,     time:  9644 [μs]
+Total time: 13292 [μs]
 
 
 ---------------------------------
 Number of threads:   4
 Method used:    block
 ---------------------------------
-thread:   0,     time:   719 [μs]
-thread:   1,     time:   683 [μs]
-thread:   2,     time:   675 [μs]
-thread:   3,     time:   695 [μs]
-Total time:  1121 [μs]
+thread:   0,     time:   626 [μs]
+thread:   1,     time:  1533 [μs]
+thread:   2,     time:   745 [μs]
+thread:   3,     time:   613 [μs]
+Total time:  1864 [μs]
 
 
 ---------------------------------
 Number of threads:   8
 Method used:    numbers
 ---------------------------------
-thread:   0,     time:  3062 [μs]
-thread:   1,     time:  8391 [μs]
-thread:   2,     time:  8694 [μs]
-thread:   3,     time:  5770 [μs]
-thread:   4,     time:  6227 [μs]
-thread:   5,     time:  2950 [μs]
-thread:   6,     time:  2570 [μs]
-thread:   7,     time:  1539 [μs]
-Total time: 10003 [μs]
+thread:   0,     time:  6374 [μs]
+thread:   1,     time: 16845 [μs]
+thread:   2,     time:  3180 [μs]
+thread:   3,     time:  3589 [μs]
+thread:   4,     time:  3339 [μs]
+thread:   5,     time:  2732 [μs]
+thread:   6,     time:  2483 [μs]
+thread:   7,     time:  2105 [μs]
+Total time: 17261 [μs]
 
 
 ---------------------------------
 Number of threads:   8
 Method used:    block
 ---------------------------------
-thread:   0,     time:   459 [μs]
-thread:   1,     time:   475 [μs]
-thread:   2,     time:   430 [μs]
-thread:   3,     time:   265 [μs]
-thread:   4,     time:   242 [μs]
-thread:   5,     time:   894 [μs]
-thread:   6,     time:   954 [μs]
-thread:   7,     time:   335 [μs]
-Total time:  2049 [μs]
+thread:   0,     time:   379 [μs]
+thread:   1,     time:   364 [μs]
+thread:   2,     time:   384 [μs]
+thread:   3,     time:   959 [μs]
+thread:   4,     time:   925 [μs]
+thread:   5,     time:  1316 [μs]
+thread:   6,     time:   958 [μs]
+thread:   7,     time:  1086 [μs]
+Total time:  2240 [μs]
 
 
 ---------------------------------
 Number of threads:   16
 Method used:    numbers
 ---------------------------------
-thread:   0,     time:  5193 [μs]
-thread:   1,     time:  3001 [μs]
-thread:   2,     time:  2895 [μs]
-thread:   3,     time:  4613 [μs]
-thread:   4,     time:  3358 [μs]
-thread:   5,     time:  3389 [μs]
-thread:   6,     time:  2996 [μs]
-thread:   7,     time: 11127 [μs]
-thread:   8,     time:  7934 [μs]
-thread:   9,     time:  3059 [μs]
-thread:  10,     time:  8488 [μs]
-thread:  11,     time:  2869 [μs]
-thread:  12,     time:  8750 [μs]
-thread:  13,     time:  2677 [μs]
-thread:  14,     time:  4157 [μs]
-thread:  15,     time:  2211 [μs]
-Total time: 15168 [μs]
+thread:   0,     time: 47266 [μs]
+thread:   1,     time: 60239 [μs]
+thread:   2,     time: 46323 [μs]
+thread:   3,     time: 73622 [μs]
+thread:   4,     time: 48520 [μs]
+thread:   5,     time: 55247 [μs]
+thread:   6,     time: 47855 [μs]
+thread:   7,     time: 39602 [μs]
+thread:   8,     time: 75375 [μs]
+thread:   9,     time: 67112 [μs]
+thread:  10,     time: 56853 [μs]
+thread:  11,     time: 51934 [μs]
+thread:  12,     time: 71351 [μs]
+thread:  13,     time: 74009 [μs]
+thread:  14,     time: 58202 [μs]
+thread:  15,     time: 71230 [μs]
+Total time: 108880 [μs]
 
 
 ---------------------------------
 Number of threads:   16
 Method used:    block
 ---------------------------------
-thread:   0,     time:   207 [μs]
-thread:   1,     time:   206 [μs]
-thread:   2,     time:   170 [μs]
-thread:   3,     time:   755 [μs]
-thread:   4,     time:   207 [μs]
-thread:   5,     time:   176 [μs]
-thread:   6,     time:   195 [μs]
-thread:   7,     time:   741 [μs]
-thread:   8,     time:   529 [μs]
-thread:   9,     time:   333 [μs]
-thread:  10,     time:   186 [μs]
-thread:  11,     time:   190 [μs]
-thread:  12,     time:   195 [μs]
-thread:  13,     time:   210 [μs]
-thread:  14,     time:   600 [μs]
-thread:  15,     time:   191 [μs]
-Total time:  2664 [μs]
+thread:   0,     time:  1222 [μs]
+thread:   1,     time:  1354 [μs]
+thread:   2,     time:  1092 [μs]
+thread:   3,     time:  1154 [μs]
+thread:   4,     time:  1255 [μs]
+thread:   5,     time:  1206 [μs]
+thread:   6,     time: 14003 [μs]
+thread:   7,     time:  1257 [μs]
+thread:   8,     time:  2585 [μs]
+thread:   9,     time:  1008 [μs]
+thread:  10,     time:  1179 [μs]
+thread:  11,     time:  5694 [μs]
+thread:  12,     time:  2180 [μs]
+thread:  13,     time:  5116 [μs]
+thread:  14,     time:  3823 [μs]
+thread:  15,     time:  3051 [μs]
+Total time: 47066 [μs]
 
 
