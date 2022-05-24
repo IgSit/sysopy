@@ -10,6 +10,7 @@ int** negative_image;
 int w, h;
 int M;
 int threads_num;
+long unsigned int **times;
 
 void write_header(FILE* file, char* method) {
     printf("---------------------------------\n");
@@ -21,6 +22,12 @@ void write_header(FILE* file, char* method) {
     fprintf(file, "Number of threads:   %d\n", threads_num);
     fprintf(file, "Method used:    %s\n", method);
     fprintf(file, "---------------------------------\n");
+}
+
+void init_times() {
+    times = calloc(threads_num, sizeof(long unsigned int *));
+    for (int i = 0; i < threads_num; i++)
+        times[i] = calloc(1, sizeof(long unsigned int));
 }
 
 void load_image(char* filename){
@@ -63,8 +70,8 @@ void* numbers_method(void* arg){
     }
 
     gettimeofday(&stop, NULL);  // koniec mierzenia czasu
-    long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    pthread_exit(&time);
+    times[idx][0] = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    pthread_exit(times[idx]);
 }
 
 void* block_method(void* arg) {
@@ -83,8 +90,8 @@ void* block_method(void* arg) {
 
     gettimeofday(&stop, NULL);  // koniec mierzenia czasu
 
-    long unsigned int time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-    pthread_exit(&time);
+    times[idx][0] = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+    pthread_exit(times[idx]);
 }
 
 void save_negative(char* filename) {
@@ -118,11 +125,11 @@ pthread_t* init_threads(char* method) {
 }
 
 void wait_threads(pthread_t* threads, FILE* times_file) {
-    long unsigned int time;
+    long unsigned int *time;
     for(int i = 0; i < threads_num; i++) {
-        pthread_join(threads[i], (void **) time);
-        printf("thread: %3d     time: %5lu [μs]\n", i, time);
-        fprintf(times_file, "thread: %3d,     time: %5lu [μs]\n", i, time);
+        pthread_join(threads[i], (void**) &time);
+        printf("thread: %3d     time: %5lu [μs]\n", i, *time);
+        fprintf(times_file, "thread: %3d,     time: %5lu [μs]\n", i, *time);
     }
 }
 
@@ -144,6 +151,8 @@ int main(int argc, char* argv[]){
     char* input_file = argv[3];
     char* output_file = argv[4];
     struct timeval stop, start;
+
+    init_times();
 
     load_image(input_file);
 
